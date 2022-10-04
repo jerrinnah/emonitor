@@ -5,7 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 const SuccessScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.round} onPress={()=> navigation.navigate("FeedScreen")}>
+      <TouchableOpacity style={styles.round} onPress={()=> navigation.navigate("Navigation")}>
         <Entypo name="check" size={40} color="white" />
       </TouchableOpacity>
       <View style={styles.regInfo}>
