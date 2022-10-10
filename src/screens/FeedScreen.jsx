@@ -5,10 +5,32 @@ import { Entypo } from '@expo/vector-icons';
 import City from '../components/City';
 import PostFeed from '../components/PostFeed';
 import Trends from '../components/Trends';
-
+import { collection, getDocs, onSnapshot } from 'firebase/firestore'
+import { db } from '../firebase.config'
 
 
 const FeedScreen = () => {
+  const [post, setPosts] = React.useState([]);
+  const postCollection = collection(db, 'posts');
+
+  React.useEffect(() => {
+    (async function() {
+      const data = await getDocs(postCollection);
+      setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      console.log(post);
+    })()
+
+    const obs = onSnapshot(postCollection, {
+      next: (data) => {
+        setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      }
+    })
+
+    return () => {
+      obs();
+    }
+  }, [])
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -49,9 +71,9 @@ const FeedScreen = () => {
 
       <ScrollView style={styles.scroll}>
         <View style={styles.boxList}>
-          <PostFeed />
-          <PostFeed />
-          <PostFeed />
+          {post.map((item, index) => (
+            <PostFeed key={index} post={item.post} username={item.username} />
+          ))}
         </View>
       </ScrollView>
 
