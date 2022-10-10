@@ -1,8 +1,23 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View,  ActivityIndicator, Pressable, Alert } from 'react-native';
 import React from 'react';
 import { Entypo } from '@expo/vector-icons';
+import { collection, addDoc } from 'firebase/firestore'
+import { db } from '../firebase.config';
 
 const AddPost = () => {
+  const [post, setPost] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const collectionRef = collection(db, 'posts');
+
+  const submit = async () => {
+    setLoading(true);
+    console.log(post);
+    await addDoc(collectionRef, { post, username: 'daniel' });
+    setLoading(false);
+    setPost('');
+    Alert.alert('Message', 'Post created!')
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -14,6 +29,7 @@ const AddPost = () => {
           <TextInput
             style={styles.input}
             placeholder="What is the sitution update?"
+            onChangeText={(e) => setPost(e)}
           />
         </View>
         <View style={styles.addImage}>
@@ -21,16 +37,17 @@ const AddPost = () => {
         </View>
       </View>
       <View style={styles.post}>
-        <View style={styles.postBtn}>
-          <Text style={styles.postTitle}>Post</Text>
-        </View>
+        <Pressable onPress={submit} style={styles.postBtn}>
+         {!loading &&  <Text style={styles.postTitle}>Post</Text>}
+         {loading && <ActivityIndicator color="white" size="small" />}
+        </Pressable>
         <View style={styles.miniBtns}>
-          <View style={styles.shortBtn}>
+          {/* <View style={styles.shortBtn}>
             <Text style={styles.postTitle}>LIVE</Text>
-          </View>
-                  <View style={styles.shortBtn}>
+          </View> */}
+                  {/* <View style={styles.shortBtn}>
                       <Entypo name='location-pin' size={30} color="white" />
-          </View>
+          </View> */}
         </View>
       </View>
     </View>
@@ -91,7 +108,6 @@ const styles = StyleSheet.create({
     width: '100%',
     top: 100,
     flexDirection: 'row',
-    justifyContent: 'space-around',
   },
   postTitle: {
     color: 'white',
@@ -101,7 +117,7 @@ const styles = StyleSheet.create({
   },
   postBtn: {
     height: 50,
-    width: '55%',
+    width: '100%',
     backgroundColor: 'blue',
     borderRadius: 10,
     justifyContent: 'center',
