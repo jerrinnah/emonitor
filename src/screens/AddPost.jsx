@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     bottom: 30,
   },
   headerTitle: {
-    fontSize: '20',
+    fontSize: 20,
     fontWeight: '700',
   },
   textBox: {

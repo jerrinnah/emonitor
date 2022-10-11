@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   icons: {
     height: 35,
     width: 130,
-    justifyContent: 'flex-between',
+    justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -177,7 +177,6 @@ const styles = StyleSheet.create({
       top:30,
     height: '20%',
     width: '100%',
-    // backgroundColor: 'red',
     alignItems: 'center',
   },
   trendsRow: {
